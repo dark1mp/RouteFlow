@@ -17,6 +17,7 @@ struct MainMapView: View {
     @State private var selectedStop: Stop?
     @State private var showSearch = false
     @State private var showSideMenu = false
+    @State private var showCreateRoute = true
     @State private var sheetDetent: PresentationDetent = .fraction(0.35)
 
     init(locationService: LocationService, modelContext: ModelContext) {
@@ -74,11 +75,23 @@ struct MainMapView: View {
         .fullScreenCover(isPresented: $showSearch) {
             SearchStopView(viewModel: viewModel.stopsViewModel)
         }
+        .fullScreenCover(isPresented: $showCreateRoute) {
+            CreateRouteView { name, date in
+                viewModel.createRoute(name: name, date: date)
+            }
+            .interactiveDismissDisabled()
+        }
         .sheet(isPresented: $showSideMenu) {
-            SideMenuView()
+            SideMenuView(onNewRoute: {
+                showSideMenu = false
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    viewModel.startNewRoute()
+                    showCreateRoute = true
+                }
+            })
         }
         .sheet(item: $selectedStop) { stop in
-            StopDetailSheet(stop: stop)
+            StopDetailView(viewModel: viewModel.stopsViewModel, stop: stop)
         }
         .onChange(of: viewModel.stopsViewModel.route.stops.count) { _, _ in
             updateCameraToFitStops()
@@ -89,9 +102,6 @@ struct MainMapView: View {
 
     private var mapLayer: some View {
         Map(position: $mapPosition) {
-            // User location is shown automatically via .userLocation
-
-            // Stop annotations
             ForEach(viewModel.stopsViewModel.route.stops) { stop in
                 Annotation("", coordinate: stop.coordinate) {
                     Button {
@@ -149,9 +159,30 @@ struct MainMapView: View {
 @MainActor
 final class MainMapViewModel: ObservableObject {
     @Published var stopsViewModel: AddStopsViewModel
+    private let locationService: LocationService
+    private let modelContext: ModelContext
 
     init(locationService: LocationService, modelContext: ModelContext) {
+        self.locationService = locationService
+        self.modelContext = modelContext
         self.stopsViewModel = AddStopsViewModel(
+            locationService: locationService,
+            modelContext: modelContext
+        )
+    }
+
+    func createRoute(name: String, date: Date) {
+        let route = Route(name: name, createdAt: date)
+        modelContext.insert(route)
+        stopsViewModel = AddStopsViewModel(
+            route: route,
+            locationService: locationService,
+            modelContext: modelContext
+        )
+    }
+
+    func startNewRoute() {
+        stopsViewModel = AddStopsViewModel(
             locationService: locationService,
             modelContext: modelContext
         )

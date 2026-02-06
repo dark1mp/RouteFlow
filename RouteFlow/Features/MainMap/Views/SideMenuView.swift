@@ -10,11 +10,20 @@ import SwiftUI
 struct SideMenuView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showRouteHistory = false
+    var onNewRoute: (() -> Void)? = nil
 
     var body: some View {
         NavigationStack {
             List {
                 Section {
+                    if let onNewRoute {
+                        Button {
+                            onNewRoute()
+                        } label: {
+                            Label("New Route", systemImage: "plus.circle")
+                        }
+                    }
+
                     Button {
                         showRouteHistory = true
                     } label: {
