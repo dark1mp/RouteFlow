@@ -76,11 +76,11 @@
 		DAFD189B9195ED124E475373 /* CLLocationCoordinate2D+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocationCoordinate2D+Extensions.swift"; sourceTree = "<group>"; };
 		E7087C543EFF55FE03CC37E5 /* MapSearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSearchBarView.swift; sourceTree = "<group>"; };
 		F1C5447CA3B36AD056156E65 /* RouteOptimizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteOptimizationService.swift; sourceTree = "<group>"; };
-		DD7B998A27CE4EDEB3AF8CFC /* SearchStopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchStopView.swift; sourceTree = "<group>"; };
-		DF8A8724B85B4A09A6BF2E18 /* StopDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopDetailView.swift; sourceTree = "<group>"; };
-		50A3A7AD269F4E709540D8BE /* CreateRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRouteView.swift; sourceTree = "<group>"; };
-		80B78E5A357D4285A08F95FB /* OptimizeRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizeRouteView.swift; sourceTree = "<group>"; };
-		33146F0CE13C4B94A5F79C2F /* NavigationAppSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationAppSelectorView.swift; sourceTree = "<group>"; };
+		DD7B998A27CE4EDEB3AF8CFC /* SearchStopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteFlow/Features/AddStops/Views/SearchStopView.swift; sourceTree = "<group>"; };
+		DF8A8724B85B4A09A6BF2E18 /* StopDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteFlow/Features/MainMap/Views/StopDetailView.swift; sourceTree = "<group>"; };
+		50A3A7AD269F4E709540D8BE /* CreateRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteFlow/Features/MainMap/Views/CreateRouteView.swift; sourceTree = "<group>"; };
+		80B78E5A357D4285A08F95FB /* OptimizeRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteFlow/Features/MainMap/Views/OptimizeRouteView.swift; sourceTree = "<group>"; };
+		33146F0CE13C4B94A5F79C2F /* NavigationAppSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteFlow/Features/MainMap/Views/NavigationAppSelectorView.swift; sourceTree = "<group>"; };
 	/* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
