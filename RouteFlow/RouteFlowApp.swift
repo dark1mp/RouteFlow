@@ -11,6 +11,7 @@ import SwiftData
 @main
 struct RouteFlowApp: App {
     @StateObject private var locationService = LocationService()
+    @State private var showLaunchScreen = true
 
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
@@ -28,14 +29,28 @@ struct RouteFlowApp: App {
 
     var body: some Scene {
         WindowGroup {
-            MainMapView(
-                locationService: locationService,
-                modelContext: sharedModelContainer.mainContext
-            )
-            .environmentObject(locationService)
-            .modelContainer(sharedModelContainer)
-            .onAppear {
-                locationService.requestPermission()
+            ZStack {
+                MainMapView(
+                    locationService: locationService,
+                    modelContext: sharedModelContainer.mainContext
+                )
+                .environmentObject(locationService)
+                .modelContainer(sharedModelContainer)
+                .onAppear {
+                    locationService.requestPermission()
+                }
+                
+                if showLaunchScreen {
+                    LaunchScreenView()
+                        .transition(.opacity)
+                        .onAppear {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) {
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                    showLaunchScreen = false
+                                }
+                            }
+                        }
+                }
             }
         }
     }

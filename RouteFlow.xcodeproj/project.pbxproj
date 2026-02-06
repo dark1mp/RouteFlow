@@ -29,6 +29,8 @@
 		749B2C872231440F82F8E7BE /* CreateRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A3A7AD269F4E709540D8BE /* CreateRouteView.swift */; };
 		22F024B4687C40DCB35D6512 /* OptimizeRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B78E5A357D4285A08F95FB /* OptimizeRouteView.swift */; };
 		040908A1E9E74526AFB4382B /* NavigationAppSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33146F0CE13C4B94A5F79C2F /* NavigationAppSelectorView.swift */; };
+		F1A2B3C4D5E6F7A8B9C0D1E2 /* LogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D4C5F6B7A8C9D0E1F2A3B4 /* LogoView.swift */; };
+		A1B2C3D4E5F6A7B8C9D0E1F2 /* LaunchScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C3D4E5F6A7B8C9D0E1F2A3 /* LaunchScreenView.swift */; };
 	/* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +77,8 @@
 		50A3A7AD269F4E709540D8BE /* CreateRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteFlow/Features/MainMap/Views/CreateRouteView.swift; sourceTree = "<group>"; };
 		80B78E5A357D4285A08F95FB /* OptimizeRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteFlow/Features/MainMap/Views/OptimizeRouteView.swift; sourceTree = "<group>"; };
 		33146F0CE13C4B94A5F79C2F /* NavigationAppSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteFlow/Features/MainMap/Views/NavigationAppSelectorView.swift; sourceTree = "<group>"; };
+		E3D4C5F6B7A8C9D0E1F2A3B4 /* LogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteFlow/Shared/Components/LogoView.swift; sourceTree = "<group>"; };
+		B2C3D4E5F6A7B8C9D0E1F2A3 /* LaunchScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteFlow/Shared/Views/LaunchScreenView.swift; sourceTree = "<group>"; };
 	/* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -439,7 +443,9 @@
 				9924B9D61A98C65FB8755538 /* StopsBottomSheetView.swift in Sources */,				196F861B4F7D4E07B744B71F /* StopDetailView.swift in Sources */,
 				749B2C872231440F82F8E7BE /* CreateRouteView.swift in Sources */,
 				22F024B4687C40DCB35D6512 /* OptimizeRouteView.swift in Sources */,
-				040908A1E9E74526AFB4382B /* NavigationAppSelectorView.swift in Sources */,);
+				040908A1E9E74526AFB4382B /* NavigationAppSelectorView.swift in Sources */,
+				F1A2B3C4D5E6F7A8B9C0D1E2 /* LogoView.swift in Sources */,
+				A1B2C3D4E5F6A7B8C9D0E1F2 /* LaunchScreenView.swift in Sources */,);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		DFA18CC92F368D6200FFB10E /* Sources */ = {
@@ -597,6 +603,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RouteFlow/Preview Content\"";
 				ENABLE_PREVIEWS = NO;
@@ -628,6 +635,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RouteFlow/Preview Content\"";
 				ENABLE_PREVIEWS = NO;
