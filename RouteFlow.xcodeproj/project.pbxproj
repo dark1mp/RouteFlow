@@ -27,7 +27,12 @@
 		B9C5928931E8DA69E5C2FB40 /* Stop.swift in Sources */ = {isa = PBXBuildFile; fileRef = A608DCA0E09577E50D4F8DFC /* Stop.swift */; };
 		1A57C958E8CCA74B83954C63 /* StopAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11092D6DCC03D045663594E4 /* StopAnnotationView.swift */; };
 		9924B9D61A98C65FB8755538 /* StopsBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8838B2D4E787CE205D83D532 /* StopsBottomSheetView.swift */; };
-/* End PBXBuildFile section */
+		FEE6895616254708A089D812 /* SearchStopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7B998A27CE4EDEB3AF8CFC /* SearchStopView.swift */; };
+		196F861B4F7D4E07B744B71F /* StopDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF8A8724B85B4A09A6BF2E18 /* StopDetailView.swift */; };
+		749B2C872231440F82F8E7BE /* CreateRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A3A7AD269F4E709540D8BE /* CreateRouteView.swift */; };
+		22F024B4687C40DCB35D6512 /* OptimizeRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B78E5A357D4285A08F95FB /* OptimizeRouteView.swift */; };
+		040908A1E9E74526AFB4382B /* NavigationAppSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33146F0CE13C4B94A5F79C2F /* NavigationAppSelectorView.swift */; };
+	/* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		DFA18CCE2F368D6200FFB10E /* PBXContainerItemProxy */ = {
@@ -71,7 +76,12 @@
 		DAFD189B9195ED124E475373 /* CLLocationCoordinate2D+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocationCoordinate2D+Extensions.swift"; sourceTree = "<group>"; };
 		E7087C543EFF55FE03CC37E5 /* MapSearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSearchBarView.swift; sourceTree = "<group>"; };
 		F1C5447CA3B36AD056156E65 /* RouteOptimizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteOptimizationService.swift; sourceTree = "<group>"; };
-/* End PBXFileReference section */
+		DD7B998A27CE4EDEB3AF8CFC /* SearchStopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchStopView.swift; sourceTree = "<group>"; };
+		DF8A8724B85B4A09A6BF2E18 /* StopDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopDetailView.swift; sourceTree = "<group>"; };
+		50A3A7AD269F4E709540D8BE /* CreateRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRouteView.swift; sourceTree = "<group>"; };
+		80B78E5A357D4285A08F95FB /* OptimizeRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizeRouteView.swift; sourceTree = "<group>"; };
+		33146F0CE13C4B94A5F79C2F /* NavigationAppSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationAppSelectorView.swift; sourceTree = "<group>"; };
+	/* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		DFA18CD02F368D6200FFB10E /* RouteFlowTests */ = {
@@ -434,7 +444,12 @@
 				B9C5928931E8DA69E5C2FB40 /* Stop.swift in Sources */,
 				1A57C958E8CCA74B83954C63 /* StopAnnotationView.swift in Sources */,
 				9924B9D61A98C65FB8755538 /* StopsBottomSheetView.swift in Sources */,
-			);
+			
+				FEE6895616254708A089D812 /* SearchStopView.swift in Sources */,
+				196F861B4F7D4E07B744B71F /* StopDetailView.swift in Sources */,
+				749B2C872231440F82F8E7BE /* CreateRouteView.swift in Sources */,
+				22F024B4687C40DCB35D6512 /* OptimizeRouteView.swift in Sources */,
+				040908A1E9E74526AFB4382B /* NavigationAppSelectorView.swift in Sources */,);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		DFA18CC92F368D6200FFB10E /* Sources */ = {

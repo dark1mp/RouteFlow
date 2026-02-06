@@ -199,7 +199,7 @@ struct SearchStopView: View {
                         .focused($isSearchFocused)
                         .textFieldStyle(.plain)
                         .autocorrectionDisabled()
-                        .onChange(of: viewModel.searchText) { newValue in
+                        .onChange(of: viewModel.searchText) { _, newValue in
                             Task {
                                 await viewModel.searchLocations(newValue)
                             }
