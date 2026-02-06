@@ -2,7 +2,7 @@
 //  RouteFlowApp.swift
 //  RouteFlow
 //
-//  Created by Baran on 06/02/2026.
+//  Created on 2026-02-06.
 //
 
 import SwiftUI
@@ -10,9 +10,12 @@ import SwiftData
 
 @main
 struct RouteFlowApp: App {
+    @StateObject private var locationService = LocationService()
+
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Route.self,
+            Stop.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -26,7 +29,11 @@ struct RouteFlowApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(locationService)
+                .modelContainer(sharedModelContainer)
+                .onAppear {
+                    locationService.requestPermission()
+                }
         }
-        .modelContainer(sharedModelContainer)
     }
 }
