@@ -28,12 +28,15 @@ struct RouteFlowApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(locationService)
-                .modelContainer(sharedModelContainer)
-                .onAppear {
-                    locationService.requestPermission()
-                }
+            MainMapView(
+                locationService: locationService,
+                modelContext: sharedModelContainer.mainContext
+            )
+            .environmentObject(locationService)
+            .modelContainer(sharedModelContainer)
+            .onAppear {
+                locationService.requestPermission()
+            }
         }
     }
 }

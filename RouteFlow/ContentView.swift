@@ -372,6 +372,53 @@ struct OptimizeRouteView: View {
     }
 }
 
+// MARK: - Route History View (accessible from side menu)
+struct RouteHistoryView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query private var routes: [Route]
+    @EnvironmentObject private var locationService: LocationService
+    @State private var showingNewRoute = false
+
+    var body: some View {
+        ZStack {
+            if routes.isEmpty {
+                VStack(spacing: 20) {
+                    Image(systemName: "map")
+                        .font(.system(size: 60))
+                        .foregroundColor(.blue)
+
+                    Text("No Routes Yet")
+                        .font(.title2)
+                        .fontWeight(.bold)
+
+                    Text("Routes will appear here once you add stops from the map")
+                        .font(.body)
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                }
+                .padding()
+            } else {
+                List {
+                    ForEach(routes) { route in
+                        NavigationLink {
+                            RouteDetailView(route: route)
+                        } label: {
+                            RouteRowView(route: route)
+                        }
+                    }
+                    .onDelete { offsets in
+                        for index in offsets {
+                            modelContext.delete(routes[index])
+                        }
+                    }
+                }
+            }
+        }
+        .navigationTitle("My Routes")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
 #Preview {
     ContentView()
         .environmentObject(LocationService())

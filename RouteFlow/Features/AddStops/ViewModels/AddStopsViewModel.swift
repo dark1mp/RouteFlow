@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import SwiftData
 import MapKit
 import CoreLocation
 
@@ -18,14 +19,31 @@ final class AddStopsViewModel: ObservableObject {
     @Published var isSearching = false
     @Published var selectedLocation: IdentifiableMapItem?
     @Published var stopNotes = ""
+    @Published var focusedStopID: UUID?
 
     private let geocodingService: GeocodingService
     private let locationService: LocationService
+    private var modelContext: ModelContext?
+    private var hasCreatedRoute = false
 
-    init(route: Route, geocodingService: GeocodingService = GeocodingService(), locationService: LocationService) {
+    init(route: Route, geocodingService: GeocodingService = GeocodingService(), locationService: LocationService, modelContext: ModelContext? = nil) {
         self.route = route
         self.geocodingService = geocodingService
         self.locationService = locationService
+        self.modelContext = modelContext
+        self.hasCreatedRoute = true
+    }
+
+    /// Initialize without a route — one will be created on first stop add
+    init(locationService: LocationService, modelContext: ModelContext, geocodingService: GeocodingService = GeocodingService()) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d"
+        let defaultName = "Route - \(formatter.string(from: Date()))"
+        self.route = Route(name: defaultName)
+        self.geocodingService = geocodingService
+        self.locationService = locationService
+        self.modelContext = modelContext
+        self.hasCreatedRoute = false
     }
 
     func searchLocations(_ query: String) async {
@@ -51,6 +69,12 @@ final class AddStopsViewModel: ObservableObject {
     }
 
     func addStop(from identifiableItem: IdentifiableMapItem, notes: String = "") {
+        // Insert route into SwiftData on first stop add
+        if !hasCreatedRoute, let modelContext {
+            modelContext.insert(route)
+            hasCreatedRoute = true
+        }
+
         let mapItem = identifiableItem.mapItem
         let address = formatAddress(from: mapItem)
         let coordinate = mapItem.placemark.coordinate
