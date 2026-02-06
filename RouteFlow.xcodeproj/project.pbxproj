@@ -10,7 +10,6 @@
 		DE46F6C06BDE08F9FC2B7F77 /* AddStopsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E69474FC94B8EADBF47260C /* AddStopsView.swift */; };
 		CA1F43CF3B80DCA60F2A0E34 /* AddStopsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A9BC5602125793DCD3EDFE /* AddStopsViewModel.swift */; };
 		E2A21D767CC4DC3EE8A2FF8B /* CLLocationCoordinate2D+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAFD189B9195ED124E475373 /* CLLocationCoordinate2D+Extensions.swift */; };
-		BE418AD59088B5ABB6B71DEA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A01816C117B3CD1CB1354E3 /* ContentView.swift */; };
 		6966E3EE03088DA84391990B /* DeliveryStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE4C12E780C3904F7546045 /* DeliveryStatus.swift */; };
 		D72F44BFB49CDB83A79D8C1A /* GeocodingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5515AB276DA5D719BFF071B /* GeocodingService.swift */; };
 		6F5353399B256FD399630A71 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7566CCC1CFBAAE938638C490 /* LocationService.swift */; };
@@ -53,7 +52,6 @@
 		DFA18CBB2F368D5F00FFB10E /* RouteFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RouteFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFA18CCD2F368D6200FFB10E /* RouteFlowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RouteFlowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFA18CD72F368D6200FFB10E /* RouteFlowUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RouteFlowUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0A01816C117B3CD1CB1354E3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		11092D6DCC03D045663594E4 /* StopAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopAnnotationView.swift; sourceTree = "<group>"; };
 		20B2DF8B3CE958B354D58F09 /* MapControlsOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapControlsOverlay.swift; sourceTree = "<group>"; };
 		23A9BC5602125793DCD3EDFE /* AddStopsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddStopsViewModel.swift; sourceTree = "<group>"; };
@@ -423,7 +421,6 @@
 				DE46F6C06BDE08F9FC2B7F77 /* AddStopsView.swift in Sources */,
 				CA1F43CF3B80DCA60F2A0E34 /* AddStopsViewModel.swift in Sources */,
 				E2A21D767CC4DC3EE8A2FF8B /* CLLocationCoordinate2D+Extensions.swift in Sources */,
-				BE418AD59088B5ABB6B71DEA /* ContentView.swift in Sources */,
 				6966E3EE03088DA84391990B /* DeliveryStatus.swift in Sources */,
 				D72F44BFB49CDB83A79D8C1A /* GeocodingService.swift in Sources */,
 				6F5353399B256FD399630A71 /* LocationService.swift in Sources */,

@@ -9,7 +9,6 @@ import SwiftUI
 
 struct SideMenuView: View {
     @Environment(\.dismiss) private var dismiss
-    @State private var showRouteHistory = false
     var onNewRoute: (() -> Void)? = nil
 
     var body: some View {
@@ -17,17 +16,11 @@ struct SideMenuView: View {
             List {
                 Section {
                     if let onNewRoute {
-                        Button {
-                            onNewRoute()
-                        } label: {
-                            Label("New Route", systemImage: "plus.circle")
-                        }
-                    }
-
                     Button {
-                        showRouteHistory = true
+                        onNewRoute()
                     } label: {
-                        Label("My Routes", systemImage: "map")
+                        Label("New Route", systemImage: "plus.circle")
+                    }
                     }
 
                     Label("Settings", systemImage: "gearshape")
@@ -54,9 +47,6 @@ struct SideMenuView: View {
                         dismiss()
                     }
                 }
-            }
-            .navigationDestination(isPresented: $showRouteHistory) {
-                RouteHistoryView()
             }
         }
     }
