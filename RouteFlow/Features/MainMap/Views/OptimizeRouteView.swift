@@ -174,10 +174,13 @@ struct OptimizeRouteView: View {
             }
 
             // Polyline between stops
-            let sortedStops = route.stops.sorted(by: { $0.sequenceNumber < $1.sequenceNumber })
-            if sortedStops.count >= 2 {
-                MapPolyline(coordinates: sortedStops.map { $0.coordinate })
-                    .stroke(isOptimized ? Color.green : Color.blue, lineWidth: 3)
+            if route.stops.count >= 2 {
+                MapPolyline(
+                    coordinates: route.stops
+                        .sorted(by: { $0.sequenceNumber < $1.sequenceNumber })
+                        .map { $0.coordinate }
+                )
+                .stroke(.blue, lineWidth: 3)
             }
         }
         .mapControls { }
