@@ -73,6 +73,7 @@ final class AddStopsViewModel: ObservableObject {
         if !hasCreatedRoute, let modelContext {
             modelContext.insert(route)
             hasCreatedRoute = true
+            try? modelContext.save()
         }
 
         let mapItem = identifiableItem.mapItem
@@ -89,6 +90,11 @@ final class AddStopsViewModel: ObservableObject {
 
         route.stops.append(newStop)
         route.updatedAt = Date()
+
+        // Save the updated route
+        if let modelContext {
+            try? modelContext.save()
+        }
 
         // Clear selection and notes
         selectedLocation = nil

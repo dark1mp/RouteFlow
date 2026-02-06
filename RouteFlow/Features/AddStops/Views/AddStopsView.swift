@@ -188,8 +188,21 @@ struct SearchStopView: View {
     @FocusState private var isSearchFocused: Bool
 
     var body: some View {
-        NavigationStack {
+        ZStack {
             VStack(spacing: 0) {
+                // Header
+                HStack {
+                    Text("Add Stop")
+                        .font(.headline)
+                    Spacer()
+                    Button("Close") {
+                        dismiss()
+                    }
+                    .foregroundColor(.blue)
+                }
+                .padding()
+                .borderBottom(width: 1, color: .gray.opacity(0.2))
+                
                 // Search bar
                 HStack {
                     Image(systemName: "magnifyingglass")
@@ -237,6 +250,7 @@ struct SearchStopView: View {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(mapItem.name ?? "Unknown")
                                     .font(.body)
+                                    .foregroundColor(.primary)
 
                                 if let address = formatPlacemark(mapItem.placemark) {
                                     Text(address)
@@ -247,22 +261,22 @@ struct SearchStopView: View {
                         }
                     }
                 }
+                
+                Spacer()
             }
-            .navigationTitle("Add Stop")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
+            
+            if let identifiableItem = viewModel.selectedLocation {
+                AddStopDetailView(
+                    identifiableMapItem: identifiableItem,
+                    viewModel: viewModel,
+                    onDismiss: {
                         dismiss()
                     }
-                }
+                )
             }
-            .sheet(item: $viewModel.selectedLocation) { identifiableItem in
-                AddStopDetailView(identifiableMapItem: identifiableItem, viewModel: viewModel, dismiss: dismiss)
-            }
-            .onAppear {
-                isSearchFocused = true
-            }
+        }
+        .onAppear {
+            isSearchFocused = true
         }
     }
 
@@ -289,49 +303,87 @@ struct SearchStopView: View {
 struct AddStopDetailView: View {
     let identifiableMapItem: IdentifiableMapItem
     @ObservedObject var viewModel: AddStopsViewModel
-    let dismiss: DismissAction
-    @Environment(\.dismiss) private var dismissSelf
+    let onDismiss: () -> Void
 
     var mapItem: MKMapItem {
         identifiableMapItem.mapItem
     }
 
     var body: some View {
-        NavigationStack {
-            Form {
-                Section("Location") {
-                    Text(mapItem.name ?? "Unknown")
+        ZStack {
+            Color.black.opacity(0.4)
+                .ignoresSafeArea()
+            
+            VStack(spacing: 0) {
+                HStack {
+                    Text("Confirm Stop")
                         .font(.headline)
-
-                    if let address = formatAddress() {
-                        Text(address)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
+                    Spacer()
+                    Button {
+                        viewModel.selectedLocation = nil
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(.gray)
                     }
                 }
-
-                Section("Notes") {
-                    TextField("Delivery instructions (optional)", text: $viewModel.stopNotes, axis: .vertical)
-                        .lineLimit(3...6)
+                .padding()
+                .background(Color(.systemBackground))
+                
+                ScrollView {
+                    VStack(spacing: 20) {
+                        Section {
+                            Text(mapItem.name ?? "Unknown")
+                                .font(.headline)
+                            
+                            if let address = formatAddress() {
+                                Text(address)
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                        
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Delivery Notes")
+                                .font(.headline)
+                            
+                            TextField("Add instructions (optional)", text: $viewModel.stopNotes, axis: .vertical)
+                                .lineLimit(3...6)
+                                .padding(12)
+                                .background(Color(.systemGray6))
+                                .cornerRadius(8)
+                        }
+                        
+                        HStack(spacing: 12) {
+                            Button(action: {
+                                viewModel.selectedLocation = nil
+                            }) {
+                                Text("Cancel")
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(Color(.systemGray6))
+                                    .foregroundColor(.primary)
+                                    .cornerRadius(8)
+                            }
+                            
+                            Button(action: {
+                                viewModel.addStop(from: identifiableMapItem, notes: viewModel.stopNotes)
+                                onDismiss()
+                            }) {
+                                Text("Add Stop")
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(Color.blue)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(8)
+                            }
+                        }
+                    }
+                    .padding()
                 }
+                .background(Color(.systemBackground))
             }
-            .navigationTitle("Add Stop")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        dismissSelf()
-                    }
-                }
-
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Add") {
-                        viewModel.addStop(from: identifiableMapItem, notes: viewModel.stopNotes)
-                        dismissSelf()
-                        dismiss()
-                    }
-                }
-            }
+            .cornerRadius(16)
+            .padding()
         }
     }
 
@@ -363,6 +415,13 @@ struct AddStopDetailView: View {
 extension View {
     func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
         clipShape(RoundedCorner(radius: radius, corners: corners))
+    }
+    
+    func borderBottom(width: CGFloat = 1, color: Color = .gray) -> some View {
+        VStack(spacing: 0) {
+            self
+            Divider()
+        }
     }
 }
 
