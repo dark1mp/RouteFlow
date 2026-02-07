@@ -1,96 +1,47 @@
-# Claude Context File for RouteFlow
+# RouteFlow Development Guide
 
 ## Project Overview
-RouteFlow is an iOS delivery route management application built with SwiftUI. The app helps users create, manage, and optimize delivery routes with real-time map visualization.
+RouteFlow is an iOS delivery route planning app built with SwiftUI, MapKit, and SwiftData.
 
-## Key Architecture
+## Project Structure
+- Xcode project at: RouteFlow/RouteFlow.xcodeproj
+- Source code at: RouteFlow/RouteFlow/
+- GitHub: github.com/dark1mp/RouteFlow (branch: main)
+- Bundle ID: com.canpolat.RouteFlow
 
-### Entry Point
-- **App**: `RouteFlowApp.swift` - Initializes LocationService and ModelContainer
-- **Main View**: `MainMapView.swift` - Primary map-based interface
+## Technical Requirements
+- Minimum deployment target: iOS 17.0 (iPhone 11 and newer — all supported)
+- Language: Swift 5.9+
+- UI Framework: SwiftUI
+- Persistence: SwiftData (@Model)
+- Maps: MapKit with MKMapItem for location search
+- No third-party dependencies — Apple frameworks only
 
-### Core Models
-- **Route**: Represents a delivery route with multiple stops
-  - Properties: id, name, stops (array), isOptimized, totalDistance, estimatedDuration, timestamps
+## Architecture
+- MVVM pattern: Views → ViewModels → Services
+- Features organized under Features/ (AddStops, MainMap)
+- Shared components under Shared/Components/ and Shared/Views/
+- Core models, services, and utilities under Core/
+
+## Key Models
+- **Route** (@Model): name, date, stops array, isOptimized, totalDistance, estimatedDuration
   - Computed: progressPercentage, nextStop, formattedDistance, formattedDuration
+- **Stop** (@Model): address, latitude, longitude, notes, status, sequenceNumber
+  - DeliveryStatus cases: .pending, .inProgress, .delivered, .failed, .skipped
+  - Uses `stop.coordinate` (computed CLLocationCoordinate2D), **NOT** `stop.location`
+  - Each DeliveryStatus has: color, icon properties
+- **IdentifiableMapItem**: wrapper around MKMapItem for SwiftUI lists
+- **NavigationApp**: enum (AppleMaps, GoogleMaps, Waze) with urlScheme, universalLink, icon
 
-- **Stop**: Individual delivery stop
-  - Properties: id, address, coordinate, notes, status, sequenceNumber, timestamps
-  - Computed: coordinate (CLLocationCoordinate2D), isCompleted
-  - Methods: updateStatus()
-
-- **DeliveryStatus**: Enum (Pending, InProgress, Delivered, Failed, Skipped)
-  - Each status has: color, icon
-
-- **NavigationApp**: Enum (AppleMaps, GoogleMaps, Waze)
-  - Each app has: urlScheme, universalLink, icon
-
-### Core Services
-- **LocationService**: Manages user location permissions and current location
-- **GeocodingService**: Converts addresses to coordinates and vice versa
-- **NavigationService**: Launches navigation apps with coordinates
-- **RouteOptimizationService**: Calculates optimal stop sequences
-
-### Features
-
-#### Phase 1: Route Creation
-- **CreateRouteView.swift** - Full screen modal for creating new routes
-  - Date selection (Today/Tomorrow/Custom)
-  - Route name input (optional)
-  - Confirm action triggers route creation
-
-#### Phase 2: Stop Detail Management
-- **StopDetailView.swift** - View/edit individual stops
-  - Mini map showing stop location
-  - Editable notes field
-  - Status selector with 5 states
-  - Remove stop functionality
-  - Real-time model updates
-
-#### Phase 2b: Main Map Integration
-- **MainMapView.swift** - Primary map interface
-  - Full-screen MapKit integration
-  - Hamburger menu for navigation
-  - Search bar for adding stops
-  - Persistent bottom sheet showing stop list
-  - Stop pin tapping opens detail view
-  - Auto-fit camera to stops
-
-#### Phase 3: Route Optimization
-- **OptimizeRouteView.swift** - Route optimization and visualization
-  - Blue polyline showing route
-  - Statistics display (distance saved, time saved)
-  - Optimized stop order list with ETAs
-  - Uses RouteOptimizationService
-  - Loading state with async operation
-
-#### Phase 4: Navigation App Selection
-- **NavigationAppSelectorView.swift** - Choose navigation app
-  - Support for 3 navigation apps
-  - "Remember choice" toggle with @AppStorage
-  - Error handling with alerts
-  - Deep linking to maps
-
-#### Phase 5: Error Handling & Animations
-- Loading progress indicators
-- Empty states with helpful messaging
-- Error alerts for failed operations
-- Smooth animations:
-  - .easeInOut(duration: 0.2) for status changes
-  - .asymmetric for list transitions
-  - withAnimation() wrappers
-
-### Supporting Components
-- **SearchStopView** (in AddStopsView.swift) - Location search interface
-- **SideMenuView.swift** - Hamburger menu with "New Route" option
-- **StopsBottomSheetView.swift** - Persistent sheet showing route stops
-- **MapControlsOverlay.swift** - Map control buttons
-- **MapSearchBarView.swift** - Search bar overlay
-- **MapWithPinsView.swift** - Shared map component with stops
-- **StopAnnotationView.swift** - Styled map pin annotations
+## Key Views & Flow
+- RouteFlowApp → LaunchScreenView (1.8s splash) → MainMapView
+- MainMapView: Map + hamburger menu + search bar + bottom sheet (StopsBottomSheetView)
+- StopsBottomSheetView: "Add stop" button triggers `showSearch = true` via closure
+- MainMapView has `.fullScreenCover(isPresented: $showSearch)` → SearchStopView
+- SearchStopView: search field + results list + confirmation modal overlay
+- AddStopsView: map + stop list (used separately from MainMapView flow)
 
 ### Data Flow
-
 ```
 MainMapView
 ├── MainMapViewModel
@@ -98,7 +49,6 @@ MainMapView
 │       ├── LocationService
 │       ├── GeocodingService
 │       └── ModelContext (SwiftData)
-│
 ├── Sheets/Modals
 │   ├── CreateRouteView (onConfirm → createRoute)
 │   ├── SearchStopView (select location → addStop)
@@ -106,54 +56,48 @@ MainMapView
 │   ├── OptimizeRouteView (optimize → updateRoute)
 │   ├── NavigationAppSelectorView (launch nav)
 │   └── SideMenuView (new route)
-│
 └── Map Layer
     ├── StopAnnotationView (pins)
     └── MapPolyline (route visualization)
 ```
 
-## Recent Fixes Applied
+## Core Services
+- **LocationService**: Manages user location permissions and current location
+- **GeocodingService**: Converts addresses to coordinates and vice versa
+- **NavigationService**: Launches navigation apps with coordinates
+- **RouteOptimizationService**: Calculates optimal stop sequences
 
-1. **Xcode Project Registration**
-   - Added 5 new view files to project.pbxproj
-   - Registered in Sources build phase
+## Critical Rules — FOLLOW THESE EXACTLY
 
-2. **File Path Resolution**
-   - Corrected file paths from root to subdirectories
-   - All files now point to correct RouteFlow/Features/... paths
+### 1. File Registration
+Every new .swift file MUST be registered in project.pbxproj with:
+- PBXBuildFile entry (in Sources section)
+- PBXFileReference entry
+- Added to the correct PBXGroup (matching folder structure)
+- Added to PBXSourcesBuildPhase files list
+If you skip this, the file compiles but types are "not found in scope."
 
-3. **Deprecated onChange Syntax**
-   - Updated AddStopsView to use iOS 17+ syntax
-   - Changed from `onChange(of:) { newValue }` to `onChange(of:) { _, newValue }`
+### 2. File Creation
+NEVER use the create_file tool for Swift files — it causes encoding corruption
+(doubled characters like "import SwiftUIimport SwiftUI").
+ALWAYS use terminal `cat > filepath << 'ENDOFFILE' ... ENDOFFILE` to create Swift files.
 
-4. **Duplicate SearchStopView**
-   - Removed duplicate file
-   - Kept implementation in AddStopsView.swift
+### 3. Before Every Build
+- Verify all enum cases match the actual DeliveryStatus definition (.pending, .inProgress, .delivered, .failed, .skipped)
+- Verify Stop properties: coordinate (computed), address, notes, status, sequenceNumber
+- Verify all referenced views/types exist and are registered in pbxproj
+- Run: `xcodebuild clean build -project RouteFlow.xcodeproj -scheme RouteFlow -destination "generic/platform=iOS Simulator" 2>&1 | grep -E "error:|BUILD"`
 
-5. **MapPolyline Compilation**
-   - Simplified coordinate computation
-   - Moved state access outside Map content builder
+### 4. Testing
+- Build from: /Users/Canpolat/Documents/RouteFlow/RouteFlow/
+- Simulator: iPhone 16 Pro Max (E2DF2819-A103-46E9-A044-56874DF4BE07)
+- Physical device: Baran's iPhone (needs signing with personal team)
+- Always test after changes — don't assume it works
 
-## Git Commits (Latest 5)
-- `0a018d4` - Add comprehensive development summary documentation
-- `0ed6393` - Fix OptimizeRouteView compilation errors
-- `477e9e6` - Fix duplicate SearchStopView definition
-- `9927bb7` - Fix file paths in Xcode project pbxproj
-- `9fdf080` - Fix compilation errors: Add files to Xcode project
-
-## Build Information
-- **Language**: Swift 5.9+
-- **iOS Version**: 16.0+
-- **Frameworks**: SwiftUI, SwiftData, MapKit, CoreLocation
-- **Xcode**: 15.0+
-
-## Important Notes for Claude
-- All SwiftUI views use proper @Environment and @State management
-- Models are @Model classes for SwiftData integration
-- Navigation uses NavigationStack with sheets and modals
-- Async operations use Task and await patterns
-- Error handling implemented with do-catch and alerts
-- Animations use withAnimation() and modifiers like .transition()
+### 5. Git
+- Repository root with .git: /Users/Canpolat/Documents/RouteFlow/RouteFlow/
+- Always commit from that directory
+- Push to origin main
 
 ## File Organization Convention
 - Views in `Features/{Feature}/Views/`
@@ -161,10 +105,30 @@ MainMapView
 - Models in `Core/Models/`
 - Services in `Core/Services/`
 - Shared components in `Shared/Components/`
+- Shared views in `Shared/Views/`
 - Extensions in `Core/Utilities/Extensions/`
 
+## Current Features (Working)
+1. Route creation with name and date (CreateRouteView)
+2. Add stops via address search (SearchStopView fullScreenCover)
+3. Stop list in bottom sheet with delete support (StopsBottomSheetView + StopRowInList)
+4. Stop detail editing (StopDetailView)
+5. Route optimization with polyline visualization (OptimizeRouteView)
+6. Navigation to external map apps (NavigationAppSelectorView)
+7. Professional logo and animated splash screen (LogoView + LaunchScreenView)
+8. Side menu for route management (SideMenuView)
+9. Map controls overlay (MapControlsOverlay)
+
+## When Making Changes
+1. Read the relevant files FIRST to understand current code
+2. Check model definitions before using properties
+3. Create files via terminal cat command (NOT create_file tool)
+4. Register new files in pbxproj (all 4 sections)
+5. Build and verify before committing
+6. Test on simulator before pushing
+
 ## Known Limitations
-- MapPolyline uses static blue color (optimized color toggling moved to future phase)
+- MapPolyline uses static blue color
 - Quick-start "copy past stops" feature is placeholder (disabled)
 - Single user support (multi-user is future phase)
 
@@ -176,6 +140,6 @@ MainMapView
 5. Phase 10: Multi-user and team management
 
 ---
-**Last Updated**: February 6, 2026  
-**Repository**: https://github.com/dark1mp/RouteFlow  
+**Last Updated**: February 7, 2026
+**Repository**: https://github.com/dark1mp/RouteFlow
 **Branch**: main
