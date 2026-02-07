@@ -20,6 +20,7 @@ final class AddStopsViewModel: ObservableObject {
     @Published var selectedLocation: IdentifiableMapItem?
     @Published var stopNotes = ""
     @Published var focusedStopID: UUID?
+    @Published var mapCameraPosition: MapCameraPosition = .automatic
 
     private let geocodingService: GeocodingService
     private let locationService: LocationService

@@ -121,3 +121,60 @@ struct StopsBottomSheetView: View {
         }
     }
 }
+
+// MARK: - Stop Row Component
+struct StopRowInList: View {
+    let stop: Stop
+    let onDelete: () -> Void
+    
+    var body: some View {
+        HStack(spacing: 12) {
+            // Sequence number badge
+            ZStack {
+                Circle()
+                    .fill(statusColor(stop.status))
+                    .frame(width: 36, height: 36)
+                Text("\(stop.sequenceNumber)")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(.white)
+            }
+            
+            // Stop info
+            VStack(alignment: .leading, spacing: 3) {
+                Text(stop.address)
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                    .lineLimit(1)
+                
+                if !stop.notes.isEmpty {
+                    Text(stop.notes)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .lineLimit(1)
+                }
+            }
+            
+            Spacer()
+            
+            // Delete button
+            Button(action: onDelete) {
+                Image(systemName: "xmark.circle.fill")
+                    .font(.system(size: 20))
+                    .foregroundColor(.gray.opacity(0.5))
+            }
+        }
+        .padding(.horizontal)
+        .padding(.vertical, 10)
+        .contentShape(Rectangle())
+    }
+    
+    private func statusColor(_ status: DeliveryStatus) -> Color {
+        switch status {
+        case .pending: return .blue
+        case .inProgress: return .orange
+        case .delivered: return .green
+        case .failed: return .red
+        case .skipped: return .gray
+        }
+    }
+}
